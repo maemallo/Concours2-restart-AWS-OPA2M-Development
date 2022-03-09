@@ -1,10 +1,11 @@
 import main
 import os
+import subprocess
 import adminSection
 
 #Premiere Banniere pour Client
 def clientBanner():
-    os.system('cls||clear')
+    subprocess. call("cls", shell = True)
     print("|--------------------------------------------------------------------------------------------------|")
     print("|                                                                                                  |")
     print("|                                                                                                  |")
@@ -40,7 +41,7 @@ def clientBannerChoice():
     while True:    
         choice=adminSection.choiceException()
         if choice==1:
-            os.system('cls||clear')
+            subprocess. call("cls", shell = True)
             print("|--------------------------------------------------------------------------------------------------|")
             print("|                                                                                                  |")
             print("|                                                                                                  |")
@@ -62,7 +63,7 @@ def clientBannerChoice():
             print("|                                     2.  Effectuer un paiement normal                             |")
             print("|                                                                                                  |")
             print("|                    Pour retourner au menu precedent : Tapez 3                                    |")
-            print("|                    Pour retouner au menu principale : Tapez 4                                         |")
+            print("|                    Pour retouner au menu principale : Tapez 4                                    |")
             print("|                                                                                                  |")
             print("|                                                                                                  |")
             print("|                                                                                                  |")
@@ -74,6 +75,7 @@ def clientBannerChoice():
 
                 userchoice=adminSection.choiceException()
                 if userchoice==1:
+                        responseUser="y"
                         nameClient=input("Entrez votre nom s'il-vous plaît:__")
                         print("")
                         if main.viewProductPointBuyingCatalogue(nameClient):
@@ -91,12 +93,17 @@ def clientBannerChoice():
                                     else:
                                                 break
                                 
-                                if main.productByingWithPoint(nameClient,nameProduct,qtyProduct):
-                                    responseUser=input("Souhaitez-vous sortir ?(Tapez \"y\")__")
-                                    clientBanner()
-                                    
-                                else:
+                                if not main.productByingWithPoint(nameClient,nameProduct,qtyProduct):
                                         print("Le produit {} n'existe pas! ".format(nameProduct))
+                                    
+                                    
+                                
+                                responseUser=input("Voulez-vous acheter un autre produit ?(Tapez \"y\")__")
+                                print("")
+                                if responseUser != "y":
+                                 print("")
+                   
+                                 print("Que souhaitez-vous faire maintenant ? Si vous voulez refaire un achat avec les points cumulés, tapez \"1\". Tapez \"2\" pour effectuer un paiement normal, \"3\" pour retourner au menu precedent et enfin \"4\" pour repartir au menu principal ")
                                
                         else:
                             print("Desole, vous ne pouvez effectuer aucun achat ")
@@ -130,15 +137,22 @@ def clientBannerChoice():
                             else:
                                         break
                         r=main.productBying(nameClient,nameProduct,qtyProduct)
-                        
-                        
-                        newBuying+=r
+                        if r == "0":
+                            print("Votre produit n'existe pas")
+                                             
+                        newBuying+=float(r)
                         print("")
                         responseUser=input("Voulez-vous acheter un autre produit ?(Tapez \"y\")__")
-                        print("")
-                    print("Le montant à payer s'élève à :__{} F CFA".format(newBuying))
 
+                        print("")
+                        if responseUser != "y":
+                            print("")
+                            print("Le montant à payer s'élève à :__{} F CFA".format(newBuying))
+
+                            print("Que souhaitez-vous faire maintenant ? Si vous voulez effectuer un achat par paiement normal, tapez \"2\". Tapez \"1\" pour acheter vos produits a partir de vos points cumulés, \"3\" pour retourner au menu precedent et enfin \"4\" pour repartir au menu principal ")
                             
+                            main.addToLogFile(nameClient,"A ACHETER PRODUIT DE "+''+ str(newBuying))
+                                
 
 
 
@@ -150,13 +164,16 @@ def clientBannerChoice():
         elif choice==2:
             nameClient=input("Entrez votre nom s'il-vous plaît:__")
             print("")
-            main.viewPoints(nameClient)
-            print("-----------------------------------------------------------------------------------------------------------------------")
-            print("-----------------------------------------------------------------------------------------------------------------------")
+            if main.viewPoints(nameClient):
+             print("-----------------------------------------------------------------------------------------------------------------------")
+             print("-----------------------------------------------------------------------------------------------------------------------")
+            else :
+                 print("Désolé, vous n'avez obtenu aucun point jusqu'ici. Veuillez effectuer des achats afin d'en obtenir")
             print("")
-            main.viewBonAchat(nameClient)
+            if not main.viewBonAchat(nameClient):
+                     print("     Vous n'avez aucun bon d'achat     ")
+
         elif choice==3:
-            os.system('cls||clear')
             print("|--------------------------------------------------------------------------------------------------|")
             print("|                                                                                                  |")
             print("|                                                                                                  |")
@@ -179,7 +196,7 @@ def clientBannerChoice():
             print("|                                        vos points cumulés                                        |")
             print("|                                                                                                  |")
             print("|                    Pour retourner au menu precedent : Tapez 3                                    |")
-            print("|                    Pour retourner au menu principal: Tapez 4                                         |")
+            print("|                    Pour retourner au menu principal: Tapez 4                                     |")
             print("|                                                                                                  |")
             print("|                                                                                                  |")
             print("|                                                                                                  |")
@@ -192,7 +209,13 @@ def clientBannerChoice():
                 userchoice=adminSection.choiceException()
                 if userchoice==1:
                     main.viewCatalogueTotal()
-                
+                    while True :
+                        try:
+                            responseUser=int(input("Que souhaitez-vous faire maintenant ? Tapez \"3\" pour retourner au menu precedent et \"3\", au menu principal__ "))
+
+                        except:
+                            print("Entrez une reponse valide")
+                    
                 elif userchoice==2:
                     name=input("Entrez votre nom__")
                    
@@ -202,6 +225,12 @@ def clientBannerChoice():
                     else:
                                 
                         main.viewProductPointBuyingCatalogue(name)
+                    while True :
+                        try:
+                            responseUser=int(input("Que souhaitez-vous faire maintenant ? Tapez \"3\" pour retourner au menu precedent et \"3\", au menu principal__ "))
+
+                        except:
+                            print("Entrez une reponse valide")
 
 
                         

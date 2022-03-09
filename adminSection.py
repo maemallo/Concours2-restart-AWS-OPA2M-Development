@@ -1,6 +1,7 @@
 import main
 import os
 import clientSection
+import subprocess
 
 #fonction pour gerer les exceptions entrees par l'utilisateur
 def choiceException():
@@ -229,7 +230,7 @@ def adminChoice():
 
 
         elif choice==2:
-            os.system('cls||clear')
+            subprocess. call("cls", shell = True)
             print("|--------------------------------------------------------------------------------------------------|")
             print("|                                                                                                  |")
             print("|                                                                                                  |")
@@ -261,6 +262,7 @@ def adminChoice():
             print("|--------------------------------------------------------------------------------------------------|")
             print("")
             refProduct=input("La Reference du Produit que vous souhaitez modifier:__")
+            main.viewCatalogue()
 
             while True:
             
@@ -325,7 +327,6 @@ def adminChoice():
                         adminBanner()
                 elif choice==4:
                     firstBanner()                       
- 
         elif choice==3:
             responseUser="y"
 
@@ -336,18 +337,44 @@ def adminChoice():
                 main.productRemove(refProduct,main.productCatalogue)
                 print("")
                 responseUser=input("Voulez-vous supprimer un autre produit ?(Tapez \"y\")__")
+                if responseUser.lower() !="y":
+                    print ("Que souhaitez-vous faire maintenant ? Tapez \"3\" pour la suppression d'un produit, \"8\" pour retourner au menu principal ")
+
            
         elif choice==4:
             main.viewCatalogueTotal()
+            while True :
+                try:
+                    responseUser=int(input("Que souhaitez-vous faire maintenant ? Tapez \"8\" pour retourner au menu principal__"))
+
+                except:
+                    print("Entrez une reponse valide")
 
         elif choice==5:
             main.viewClientTotal()
+            main.viewCatalogueTotal()
+            while True :
+                try:
+                    responseUser=int(input("Que souhaitez-vous faire maintenant ? Tapez \"8\" pour retourner au menu principal__ "))
+
+                except:
+                    print("Entrez une reponse valide")
+
 
         elif choice==6:
             main.gagnantTirageAuSort()
+
         elif choice==7:
             print("                                    ------ LE TOP 3 DES CLIENTS ------                            ")
             main.topthreeclients()
+            main.viewCatalogueTotal()
+            while True :
+                try:
+                    responseUser=int(input("Que souhaitez-vous faire maintenant ? Tapez \"8\" pour retourner au menu principal__ "))
+
+                except:
+                    print("Entrez une reponse valide")
+
         elif choice==8:
             firstBanner()
     
